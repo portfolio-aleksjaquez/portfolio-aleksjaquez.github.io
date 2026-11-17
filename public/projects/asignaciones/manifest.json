@@ -1,0 +1,70 @@
+{
+  "slug": "asignaciones",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/asignaciones/01.png",
+      "webp": "/projects/asignaciones/01.webp",
+      "thumb": "/projects/asignaciones/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Inicio de sesión del sistema de asignación de tareas"
+    },
+    {
+      "id": "02",
+      "png": "/projects/asignaciones/02.png",
+      "webp": "/projects/asignaciones/02.webp",
+      "thumb": "/projects/asignaciones/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Panel del administrador con las tareas del día, el tiempo invertido y el estatus de cada colaborador"
+    },
+    {
+      "id": "03",
+      "png": "/projects/asignaciones/03.png",
+      "webp": "/projects/asignaciones/03.webp",
+      "thumb": "/projects/asignaciones/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Asignación de una nueva tarea a un colaborador con tiempo estimado y documento de referencia"
+    },
+    {
+      "id": "04",
+      "png": "/projects/asignaciones/04.png",
+      "webp": "/projects/asignaciones/04.webp",
+      "thumb": "/projects/asignaciones/04-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Vista del colaborador con controles para iniciar, pausar y finalizar sus tareas"
+    },
+    {
+      "id": "05",
+      "png": "/projects/asignaciones/05.png",
+      "webp": "/projects/asignaciones/05.webp",
+      "thumb": "/projects/asignaciones/05-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Visor integrado que abre el documento de referencia de la tarea"
+    }
+  ]
+}

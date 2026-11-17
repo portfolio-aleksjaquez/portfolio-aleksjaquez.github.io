@@ -1,0 +1,533 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, fmt, type Locale } from '../i18n';
+import type { Project } from '../data/projects';
+import { getProjectImages, pickCover } from '../lib/assets';
+
+interface Props {
+  project: Project;
+  index: number;
+  locale: Locale;
+}
+
+const { project, index, locale } = Astro.props;
+const t = useTranslations(locale);
+const text = project.text[locale];
+const num = String(index + 1).padStart(2, '0');
+const images = getProjectImages(project.slug);
+const cover = pickCover(images);
+const coverIndex = cover ? images.indexOf(cover) : 0;
+const isLive = project.kind === 'live' && !!project.demoUrl;
+const MAX_THUMBS = 4;
+const thumbs = images.slice(0, MAX_THUMBS);
+const extra = images.length - thumbs.length;
+const countLabel = images.length === 1 ? t.projects.screensCountOne : fmt(t.projects.screensCount, { n: images.length });
+const demoHost = project.demoUrl ? new URL(project.demoUrl).host + new URL(project.demoUrl).pathname : '';
+const galleryData = images.map((img) => ({
+  src: img.webp,
+  full: img.png,
+  w: img.width,
+  h: img.height,
+  caption: img.caption,
+}));
+const flip = index % 2 === 1;
+---
+
+<article
+  id={`p-${project.slug}`}
+  class:list={['project', `project--${project.kind}`, { 'project--flip': flip }]}
+  aria-labelledby={`t-${project.slug}`}
+  data-reveal
+>
+  <div class="project__rule" aria-hidden="true">
+    <span class="project__num">{num}</span>
+    <span class="project__line"></span>
+  </div>
+
+  <div class="project__body">
+    <div class="project__text">
+      <p class:list={['mono', 'kind', `kind--${project.kind}`]}>
+        {isLive ? t.projects.kindLive : images.length > 0 ? (text.galleryCount ?? countLabel) : t.projects.kindScreens}
+        {isLive && images.length > 0 && <span class="kind__count">· {countLabel}</span>}
+      </p>
+      <h3 id={`t-${project.slug}`}>{text.title}</h3>
+      {text.note && <p class="note mono">{text.note}</p>}
+      <p class="desc">{text.description}</p>
+      <ul class="tags" aria-label={t.projects.tagsLabel}>
+        {project.tags.map((tag) => <li class="tag">{tag}</li>)}
+      </ul>
+      <div class="actions">
+        {
+          isLive && (
+            <a class="btn btn--primary" href={project.demoUrl} target="_blank" rel="noopener">
+              {t.projects.viewDemo}
+              <span class="visually-hidden">{t.a11y.opensInNewTab}</span>
+              <Icon name="arrow" class="arrow" />
+            </a>
+          )
+        }
+        {
+          images.length > 0 && (
+            <button class:list={['btn', { 'btn--primary': !isLive }]} type="button" data-lightbox-open={project.slug} data-index="0">
+              <Icon name="images" />
+              {text.galleryButton ?? t.projects.viewScreens}
+            </button>
+          )
+        }
+        {
+          project.videoSoon && (
+            <span class="soon mono">
+              <Icon name="play" />
+              {t.projects.videoSoon}
+            </span>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="project__media">
+      {
+        isLive ? (
+          <a class="frame frame--link" href={project.demoUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <span class="frame__bar">
+              <span class="frame__dots">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span class="frame__url mono">{demoHost}</span>
+            </span>
+            {cover ? (
+              <img
+                class="frame__img"
+                src={cover.webp}
+                srcset={`${cover.thumb} ${cover.thumbWidth}w, ${cover.webp} ${cover.width}w`}
+                sizes="(max-width: 900px) 92vw, 640px"
+                width={cover.width}
+                height={cover.height}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="placeholder">
+                <span class="placeholder__num">{num}</span>
+                <span class="placeholder__label mono">{t.projects.placeholderLabel}</span>
+              </span>
+            )}
+          </a>
+        ) : cover ? (
+          <button class="frame frame--button" type="button" data-lightbox-open={project.slug} data-index={coverIndex}>
+            <span class="frame__bar">
+              <span class="frame__dots">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span class="frame__url mono">{cover.caption}</span>
+              <Icon name="expand" class="frame__expand" />
+            </span>
+            <img
+              class="frame__img"
+              src={cover.webp}
+              srcset={`${cover.thumb} ${cover.thumbWidth}w, ${cover.webp} ${cover.width}w`}
+              sizes="(max-width: 900px) 92vw, 640px"
+              width={cover.width}
+              height={cover.height}
+              alt={fmt(t.projects.previewAlt, { title: text.title })}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="visually-hidden">
+              {fmt(t.projects.openImage, { n: coverIndex + 1, total: images.length, caption: cover.caption })}
+            </span>
+          </button>
+        ) : (
+          <div class="frame">
+            <span class="frame__bar">
+              <span class="frame__dots">
+                <i />
+                <i />
+                <i />
+              </span>
+            </span>
+            <span class="placeholder">
+              <span class="placeholder__num" aria-hidden="true">{num}</span>
+              <span class="placeholder__label mono">{t.projects.placeholderLabel}</span>
+            </span>
+          </div>
+        )
+      }
+
+      {
+        images.length > 1 && (
+          <ul class="thumbs">
+            {thumbs.map((img, i) => (
+              <li>
+                <button type="button" class="thumb" data-lightbox-open={project.slug} data-index={i}>
+                  <img src={img.thumb} width={img.thumbWidth} height={img.thumbHeight} alt="" loading="lazy" decoding="async" />
+                  {i === thumbs.length - 1 && extra > 0 && <span class="thumb__more mono" aria-hidden="true">+{extra}</span>}
+                  <span class="visually-hidden">
+                    {fmt(t.projects.openImage, { n: i + 1, total: images.length, caption: img.caption })}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+
+  {images.length > 0 && <script type="application/json" data-gallery={project.slug} set:html={JSON.stringify(galleryData)} />}
+</article>
+
+<style>
+  .project {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .project__rule {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .project__num {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 2rem + 4vw, 5.5rem);
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line-strong);
+    transition:
+      color 0.5s,
+      -webkit-text-stroke-color 0.5s;
+  }
+
+  .project:hover .project__num,
+  .project:focus-within .project__num {
+    -webkit-text-stroke-color: var(--accent);
+  }
+
+  .project__line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--line-strong), transparent);
+  }
+
+  .project__body {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  .project--flip .project__body {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  }
+
+  .project--flip .project__text {
+    order: 2;
+  }
+
+  .kind {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+    color: var(--muted);
+  }
+
+  .kind--live {
+    color: var(--mint);
+  }
+
+  .kind--live::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 0 0 0 rgb(143 227 200 / 0.6);
+    animation: pulse 2.4s infinite;
+  }
+
+  .kind--screens::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--muted);
+    border-radius: 2px;
+  }
+
+  .kind__count {
+    color: var(--muted);
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(143 227 200 / 0.55);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 9px rgb(143 227 200 / 0);
+    }
+  }
+
+  h3 {
+    font-size: clamp(2rem, 1.4rem + 2vw, 3.1rem);
+  }
+
+  .note {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid rgb(255 106 61 / 0.4);
+    border-radius: var(--radius-s);
+    background: var(--accent-wash);
+    color: var(--accent-soft);
+    font-size: 0.64rem;
+  }
+
+  .desc {
+    margin-top: 1.25rem;
+    color: var(--paper-dim);
+    max-width: 46ch;
+    font-size: 1.06rem;
+  }
+
+  .tags {
+    margin-top: 1.5rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1.9rem;
+  }
+
+  .soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 1rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.64rem;
+  }
+
+  .soon :global(svg) {
+    width: 12px;
+    height: 12px;
+    color: var(--accent);
+  }
+
+  /* --- Marco tipo ventana --------------------------------------------- */
+
+  .frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--ink-1);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 30px 60px -30px rgb(0 0 0 / 0.8);
+    transition:
+      transform 0.5s var(--ease-out),
+      border-color 0.3s,
+      box-shadow 0.5s var(--ease-out);
+  }
+
+  .frame--link,
+  .frame--button {
+    cursor: pointer;
+  }
+
+  .frame--link:hover,
+  .frame--button:hover,
+  .frame--button:focus-visible {
+    transform: translateY(-4px) rotate(-0.25deg);
+    border-color: var(--line-strong);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.05) inset,
+      0 40px 70px -30px rgb(0 0 0 / 0.9),
+      0 0 0 1px rgb(255 106 61 / 0.25);
+  }
+
+  .frame__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: 34px;
+    padding: 0 0.8rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink-2);
+  }
+
+  .frame__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .frame__dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ink-3);
+    border: 1px solid var(--line-strong);
+  }
+
+  .frame__dots i:first-child {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .frame__url {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    background: var(--ink-0);
+    color: var(--muted);
+    font-size: 0.6rem;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .frame :global(.frame__expand) {
+    width: 15px;
+    height: 15px;
+    color: var(--muted);
+  }
+
+  .frame__img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+    background: var(--ink-2);
+  }
+
+  /* Imagen de reemplazo cuando aún no hay capturas. */
+  .placeholder {
+    position: relative;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    aspect-ratio: 16 / 10;
+    background:
+      radial-gradient(circle at 70% 30%, rgb(255 106 61 / 0.16), transparent 55%),
+      repeating-linear-gradient(-45deg, transparent 0 11px, rgb(242 236 225 / 0.035) 11px 12px),
+      var(--ink-1);
+    text-align: center;
+  }
+
+  .placeholder__num {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 3rem + 7vw, 9rem);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(255 106 61 / 0.7);
+  }
+
+  .placeholder__label {
+    color: var(--muted);
+    font-size: 0.62rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgb(11 12 14 / 0.6);
+  }
+
+  .placeholder__label--alt {
+    color: var(--accent-soft);
+    border-color: rgb(255 106 61 / 0.35);
+  }
+
+  /* --- Miniaturas ---------------------------------------------------- */
+
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    background: var(--ink-1);
+    cursor: zoom-in;
+    transition:
+      border-color 0.2s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .thumb:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .thumb img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .thumb:hover img {
+    opacity: 1;
+  }
+
+  .thumb__more {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgb(11 12 14 / 0.72);
+    color: var(--paper);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 900px) {
+    .project__body,
+    .project--flip .project__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project--flip .project__text {
+      order: 0;
+    }
+
+    .project__media {
+      order: -1;
+    }
+  }
+</style>

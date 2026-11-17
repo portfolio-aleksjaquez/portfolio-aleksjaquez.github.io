@@ -1,0 +1,70 @@
+{
+  "slug": "expedientes-clinicos",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/expedientes-clinicos/01.png",
+      "webp": "/projects/expedientes-clinicos/01.webp",
+      "thumb": "/projects/expedientes-clinicos/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Alta de un paciente"
+    },
+    {
+      "id": "02",
+      "png": "/projects/expedientes-clinicos/02.png",
+      "webp": "/projects/expedientes-clinicos/02.webp",
+      "thumb": "/projects/expedientes-clinicos/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Antecedentes del paciente"
+    },
+    {
+      "id": "03",
+      "png": "/projects/expedientes-clinicos/03.png",
+      "webp": "/projects/expedientes-clinicos/03.webp",
+      "thumb": "/projects/expedientes-clinicos/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Búsqueda de pacientes con sugerencias"
+    },
+    {
+      "id": "04",
+      "png": "/projects/expedientes-clinicos/04.png",
+      "webp": "/projects/expedientes-clinicos/04.webp",
+      "thumb": "/projects/expedientes-clinicos/04-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Signos vitales registrados en la cita"
+    },
+    {
+      "id": "05",
+      "png": "/projects/expedientes-clinicos/05.png",
+      "webp": "/projects/expedientes-clinicos/05.webp",
+      "thumb": "/projects/expedientes-clinicos/05-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Seguimiento clínico de la cita"
+    }
+  ]
+}

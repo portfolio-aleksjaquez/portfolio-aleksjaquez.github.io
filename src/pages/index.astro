@@ -1,0 +1,41 @@
+---
+import { defaultLocale, useTranslations } from '../i18n';
+
+// La raíz redirige al idioma por defecto (/es/). En sitio estático se resuelve
+// con meta refresh + enlace visible como respaldo.
+const target = `/${defaultLocale}/`;
+const t = useTranslations(defaultLocale);
+---
+
+<!doctype html>
+<html lang={defaultLocale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline define:vars={{ target }}>
+      location.replace(target + location.hash);
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0b0c0e;
+        color: #f2ece1;
+        font-family: system-ui, sans-serif;
+      }
+      a {
+        color: #ff6a3d;
+      }
+    </style>
+  </head>
+  <body>
+    <p>{t.redirect.text} <a href={target}>{t.redirect.link}</a></p>
+  </body>
+</html>

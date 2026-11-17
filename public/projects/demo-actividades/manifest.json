@@ -1,0 +1,83 @@
+{
+  "slug": "demo-actividades",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/demo-actividades/01.png",
+      "webp": "/projects/demo-actividades/01.webp",
+      "thumb": "/projects/demo-actividades/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Menú de actividades"
+    },
+    {
+      "id": "02",
+      "png": "/projects/demo-actividades/02.png",
+      "webp": "/projects/demo-actividades/02.webp",
+      "thumb": "/projects/demo-actividades/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Ordenar el ciclo de vida de la mariposa arrastrando tarjetas"
+    },
+    {
+      "id": "03",
+      "png": "/projects/demo-actividades/03.png",
+      "webp": "/projects/demo-actividades/03.webp",
+      "thumb": "/projects/demo-actividades/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Emparejar fracciones con su figura, con retroalimentación"
+    },
+    {
+      "id": "04",
+      "png": "/projects/demo-actividades/04.png",
+      "webp": "/projects/demo-actividades/04.webp",
+      "thumb": "/projects/demo-actividades/04-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Preguntas del sistema solar que explican cada respuesta"
+    },
+    {
+      "id": "05",
+      "png": "/projects/demo-actividades/05.png",
+      "webp": "/projects/demo-actividades/05.webp",
+      "thumb": "/projects/demo-actividades/05-thumb.webp",
+      "width": 780,
+      "height": 1688,
+      "thumbWidth": 720,
+      "thumbHeight": 1558,
+      "originalWidth": 780,
+      "originalHeight": 1688,
+      "caption": "Menú en celular"
+    },
+    {
+      "id": "06",
+      "png": "/projects/demo-actividades/06.png",
+      "webp": "/projects/demo-actividades/06.webp",
+      "thumb": "/projects/demo-actividades/06-thumb.webp",
+      "width": 780,
+      "height": 1688,
+      "thumbWidth": 720,
+      "thumbHeight": 1558,
+      "originalWidth": 780,
+      "originalHeight": 1688,
+      "caption": "Actividad completada en celular"
+    }
+  ]
+}

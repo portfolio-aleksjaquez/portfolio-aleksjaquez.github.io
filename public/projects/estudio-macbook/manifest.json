@@ -1,0 +1,57 @@
+{
+  "slug": "estudio-macbook",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/estudio-macbook/01.png",
+      "webp": "/projects/estudio-macbook/01.webp",
+      "thumb": "/projects/estudio-macbook/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Video que se revela al desplazarse"
+    },
+    {
+      "id": "02",
+      "png": "/projects/estudio-macbook/02.png",
+      "webp": "/projects/estudio-macbook/02.webp",
+      "thumb": "/projects/estudio-macbook/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Collage animado de rendimiento"
+    },
+    {
+      "id": "03",
+      "png": "/projects/estudio-macbook/03.png",
+      "webp": "/projects/estudio-macbook/03.webp",
+      "thumb": "/projects/estudio-macbook/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Tarjetas de características con entrada escalonada"
+    },
+    {
+      "id": "04",
+      "png": "/projects/estudio-macbook/04.png",
+      "webp": "/projects/estudio-macbook/04.webp",
+      "thumb": "/projects/estudio-macbook/04-thumb.webp",
+      "width": 390,
+      "height": 844,
+      "thumbWidth": 390,
+      "thumbHeight": 844,
+      "originalWidth": 390,
+      "originalHeight": 844,
+      "caption": "Características en celular"
+    }
+  ]
+}

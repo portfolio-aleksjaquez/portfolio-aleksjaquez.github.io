@@ -1,0 +1,70 @@
+{
+  "slug": "gestion-institucional",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/gestion-institucional/01.png",
+      "webp": "/projects/gestion-institucional/01.webp",
+      "thumb": "/projects/gestion-institucional/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Inicio de sesión"
+    },
+    {
+      "id": "02",
+      "png": "/projects/gestion-institucional/02.png",
+      "webp": "/projects/gestion-institucional/02.webp",
+      "thumb": "/projects/gestion-institucional/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Panel con eventos urgentes, retrasados, en proceso y finalizados"
+    },
+    {
+      "id": "03",
+      "png": "/projects/gestion-institucional/03.png",
+      "webp": "/projects/gestion-institucional/03.webp",
+      "thumb": "/projects/gestion-institucional/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Desempeño de cada integrante por departamento"
+    },
+    {
+      "id": "04",
+      "png": "/projects/gestion-institucional/04.png",
+      "webp": "/projects/gestion-institucional/04.webp",
+      "thumb": "/projects/gestion-institucional/04-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Detalle de un oficio con su documento de evidencia"
+    },
+    {
+      "id": "05",
+      "png": "/projects/gestion-institucional/05.png",
+      "webp": "/projects/gestion-institucional/05.webp",
+      "thumb": "/projects/gestion-institucional/05-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Registrar un evento y turnarlo a otro departamento"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { site } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <p class="disclaimer">{t.footer.disclaimer}</p>
+    <div class="row">
+      <p class="mono">© {year} {site.name}. {t.footer.rights}</p>
+      <p class="mono">{t.footer.madeWith}</p>
+      <a class="mono top" href="#contenido">{t.footer.backToTop} ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--section-gap);
+    padding-block: 2.5rem 3rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .disclaimer {
+    max-width: 80ch;
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 2rem;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    color: var(--muted);
+  }
+
+  .row .mono {
+    font-size: 0.64rem;
+  }
+
+  .top {
+    text-decoration: none;
+    color: var(--paper-dim);
+  }
+
+  .top:hover {
+    color: var(--accent);
+  }
+</style>

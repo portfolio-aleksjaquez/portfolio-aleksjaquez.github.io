@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Projects from '../../components/Projects.astro';
+import About from '../../components/About.astro';
+import Skills from '../../components/Skills.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { enabledLocales, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  // Solo se generan los idiomas habilitados (ver src/i18n/config.ts).
+  return enabledLocales.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+---
+
+<Base locale={locale}>
+  <Header slot="header" locale={locale} />
+  <Hero locale={locale} />
+  <Projects locale={locale} />
+  <About locale={locale} />
+  <Skills locale={locale} />
+  <Contact locale={locale} />
+  <Lightbox locale={locale} />
+  <Footer slot="footer" locale={locale} />
+</Base>

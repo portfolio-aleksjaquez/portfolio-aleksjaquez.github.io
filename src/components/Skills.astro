@@ -1,0 +1,132 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { skills, skillGroups, type Skill } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const groups = (Object.keys(skillGroups) as Skill['group'][]).map((key) => ({
+  key,
+  label: skillGroups[key][locale],
+  items: skills.filter((s) => s.group === key),
+}));
+---
+
+<section id="tecnologias" class="section" aria-labelledby="tecnologias-title">
+  <div class="wrap">
+    <header class="section-head" data-reveal>
+      <p class="mono eyebrow">{t.skills.eyebrow}</p>
+      <h2 id="tecnologias-title">{t.skills.title}</h2>
+      <p>{t.skills.intro}</p>
+    </header>
+
+    <div class="groups">
+      {
+        groups.map((group, gi) => (
+          <div class="group" data-reveal style={`--reveal-delay:${gi * 80}ms`}>
+            <h3 class="mono group__title">
+              <span>{String(gi + 1).padStart(2, '0')}</span>
+              {group.label}
+            </h3>
+            <ul>
+              {group.items.map((skill) => (
+                <li>
+                  <span class="skill__name">{skill.name}</span>
+                  <span class="skill__what">{skill.what[locale]}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .group {
+    padding: 1.75rem clamp(1rem, 2vw, 1.75rem) 0.5rem;
+    border-right: 1px solid var(--line);
+  }
+
+  .group:first-child {
+    padding-left: 0;
+  }
+
+  .group:last-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .group__title {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--paper-dim);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .group__title span {
+    color: var(--accent);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.35rem;
+  }
+
+  li {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .skill__name {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    line-height: 1.1;
+  }
+
+  .skill__what {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 1000px) {
+    .groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .group {
+      padding-inline: 0 1.5rem;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1.75rem;
+    }
+    .group:nth-child(even) {
+      padding-inline: 1.5rem 0;
+      border-left: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .groups {
+      grid-template-columns: 1fr;
+    }
+    .group,
+    .group:nth-child(even) {
+      padding-inline: 0;
+      border-left: 0;
+    }
+  }
+</style>

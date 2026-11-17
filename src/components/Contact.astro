@@ -1,0 +1,155 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, type Locale } from '../i18n';
+import { site, isPending } from '../data/site';
+import { publicFileExists } from '../lib/assets';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const emailReady = !isPending(site.email);
+const whatsappDigits = site.whatsapp.replace(/\D/g, '');
+const whatsappReady = !isPending(site.whatsapp) && whatsappDigits.length >= 10;
+const cvReady = publicFileExists(site.cvPath);
+
+const actions = [
+  {
+    key: 'email',
+    ready: emailReady,
+    href: `mailto:${site.email}`,
+    label: t.contact.email,
+    detail: emailReady ? site.email : '',
+    icon: 'mail' as const,
+    primary: true,
+  },
+  {
+    key: 'whatsapp',
+    ready: whatsappReady,
+    href: `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(t.contact.whatsappMessage)}`,
+    label: t.contact.whatsapp,
+    detail: '',
+    icon: 'whatsapp' as const,
+    primary: false,
+    external: true,
+  },
+  {
+    key: 'cv',
+    ready: cvReady,
+    href: site.cvPath,
+    label: t.contact.cv,
+    detail: '',
+    icon: 'download' as const,
+    primary: false,
+    download: true,
+  },
+];
+const anyPending = actions.some((a) => !a.ready);
+---
+
+<section id="contacto" class="section contact" aria-labelledby="contacto-title">
+  <div class="wrap">
+    <div class="panel" data-reveal>
+      <p class="mono eyebrow">{t.contact.eyebrow}</p>
+      <h2 id="contacto-title">{t.contact.title}</h2>
+      <p class="lead">{t.contact.lead}</p>
+
+      <ul class="actions">
+        {
+          actions.map((a) => (
+            <li>
+              {a.ready ? (
+                <a
+                  class:list={['btn', { 'btn--primary': a.primary }]}
+                  href={a.href}
+                  target={a.external ? '_blank' : undefined}
+                  rel={a.external ? 'noopener' : undefined}
+                  download={a.download ? '' : undefined}
+                >
+                  <Icon name={a.icon} />
+                  {a.label}
+                  {a.external && <span class="visually-hidden">{t.a11y.opensInNewTab}</span>}
+                </a>
+              ) : (
+                <span class="btn" aria-disabled="true">
+                  <Icon name={a.icon} />
+                  {a.label}
+                  <span class="btn__soon">{t.contact.pending}</span>
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      {emailReady && <p class="mono detail">{site.email}</p>}
+      {anyPending && <p class="note">{t.contact.pendingNote}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.25rem, 6vw, 5rem);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius-l) + 8px);
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 100%, rgb(255 106 61 / 0.16), transparent 60%),
+      linear-gradient(180deg, var(--ink-1), var(--ink-0));
+  }
+
+  .panel::after {
+    /* Monograma gigante de fondo. */
+    content: 'AJ';
+    position: absolute;
+    right: -0.05em;
+    bottom: -0.32em;
+    font-family: var(--font-display);
+    font-size: clamp(12rem, 8rem + 18vw, 26rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(242 236 225 / 0.07);
+    pointer-events: none;
+  }
+
+  h2 {
+    margin-top: 1.25rem;
+    font-size: clamp(2.5rem, 1.5rem + 4.5vw, 5.6rem);
+    max-width: 14ch;
+  }
+
+  .lead {
+    margin-top: 1.5rem;
+    max-width: 48ch;
+    color: var(--paper-dim);
+    font-size: 1.12rem;
+  }
+
+  .actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .detail {
+    margin-top: 1.25rem;
+    color: var(--muted);
+    text-transform: none;
+  }
+
+  .note {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.25rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+</style>

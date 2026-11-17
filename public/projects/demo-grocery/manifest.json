@@ -1,0 +1,57 @@
+{
+  "slug": "demo-grocery",
+  "images": [
+    {
+      "id": "01",
+      "png": "/projects/demo-grocery/01.png",
+      "webp": "/projects/demo-grocery/01.webp",
+      "thumb": "/projects/demo-grocery/01-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Resumen del presupuesto mensual por categoría"
+    },
+    {
+      "id": "02",
+      "png": "/projects/demo-grocery/02.png",
+      "webp": "/projects/demo-grocery/02.webp",
+      "thumb": "/projects/demo-grocery/02-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Lista de la semana con lo comprado y lo pendiente"
+    },
+    {
+      "id": "03",
+      "png": "/projects/demo-grocery/03.png",
+      "webp": "/projects/demo-grocery/03.webp",
+      "thumb": "/projects/demo-grocery/03-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Gráficas de gasto por semana y categoría"
+    },
+    {
+      "id": "04",
+      "png": "/projects/demo-grocery/04.png",
+      "webp": "/projects/demo-grocery/04.webp",
+      "thumb": "/projects/demo-grocery/04-thumb.webp",
+      "width": 780,
+      "height": 1688,
+      "thumbWidth": 720,
+      "thumbHeight": 1558,
+      "originalWidth": 780,
+      "originalHeight": 1688,
+      "caption": "Lista semanal en celular"
+    }
+  ]
+}
