@@ -51,8 +51,7 @@ const anyPending = actions.some((a) => !a.ready);
 
 <section id="contacto" class="section contact" aria-labelledby="contacto-title">
   <div class="wrap">
-    <div class="panel" data-reveal>
-      <p class="mono eyebrow">{t.contact.eyebrow}</p>
+    <div class="panel">
       <h2 id="contacto-title">{t.contact.title}</h2>
       <p class="lead">{t.contact.lead}</p>
 
@@ -62,7 +61,7 @@ const anyPending = actions.some((a) => !a.ready);
             <li>
               {a.ready ? (
                 <a
-                  class:list={['btn', { 'btn--primary': a.primary }]}
+                  class:list={['btn', { 'btn--light': a.primary }]}
                   href={a.href}
                   target={a.external ? '_blank' : undefined}
                   rel={a.external ? 'noopener' : undefined}
@@ -83,7 +82,7 @@ const anyPending = actions.some((a) => !a.ready);
           ))
         }
       </ul>
-      {emailReady && <p class="mono detail">{site.email}</p>}
+      {emailReady && <p class="ui detail">{site.email}</p>}
       {anyPending && <p class="note">{t.contact.pendingNote}</p>}
     </div>
   </div>
@@ -95,10 +94,10 @@ const anyPending = actions.some((a) => !a.ready);
     overflow: hidden;
     padding: clamp(2.25rem, 6vw, 5rem);
     border: 1px solid var(--line);
-    border-radius: calc(var(--radius-l) + 8px);
+    border-radius: calc(var(--radius-panel) + 8px);
     background:
-      radial-gradient(ellipse 60% 80% at 100% 100%, rgb(255 106 61 / 0.16), transparent 60%),
-      linear-gradient(180deg, var(--ink-1), var(--ink-0));
+      radial-gradient(ellipse 60% 80% at 100% 100%, rgb(var(--light) / 0.16), transparent 60%),
+      linear-gradient(180deg, var(--wall-1), var(--wall));
   }
 
   .panel::after {
@@ -111,7 +110,7 @@ const anyPending = actions.some((a) => !a.ready);
     font-size: clamp(12rem, 8rem + 18vw, 26rem);
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1px rgb(242 236 225 / 0.07);
+    -webkit-text-stroke: 1px rgb(237 234 245 / 0.07);
     pointer-events: none;
   }
 
@@ -124,7 +123,7 @@ const anyPending = actions.some((a) => !a.ready);
   .lead {
     margin-top: 1.5rem;
     max-width: 48ch;
-    color: var(--paper-dim);
+    color: var(--bone-dim);
     font-size: 1.12rem;
   }
 

@@ -7,10 +7,10 @@ const t = useTranslations(defaultLocale);
 
 <Base locale={defaultLocale} title={`${t.notFound.title} · ${t.meta.title}`} noindex>
   <section class="nf wrap">
-    <p class="mono eyebrow">404</p>
+    <p class="code ui">404</p>
     <h1>{t.notFound.title}</h1>
     <p>{t.notFound.text}</p>
-    <a class="btn btn--primary" href={`/${defaultLocale}/`}>{t.notFound.back}</a>
+    <a class="btn btn--light" href={`/${defaultLocale}/`}>{t.notFound.back}</a>
   </section>
 </Base>
 
@@ -25,7 +25,11 @@ const t = useTranslations(defaultLocale);
   h1 {
     font-size: clamp(3rem, 2rem + 5vw, 6rem);
   }
-  p:not(.eyebrow) {
-    color: var(--paper-dim);
+  .code {
+    color: var(--marigold);
+    font-weight: 600;
+  }
+  p:not(.code) {
+    color: var(--bone-dim);
   }
 </style>

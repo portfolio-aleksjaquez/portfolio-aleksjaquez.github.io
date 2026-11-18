@@ -16,7 +16,7 @@ pnpm check          # revisión de tipos (astro check)
 pnpm build          # genera dist/
 pnpm preview        # sirve dist/ localmente
 pnpm sync-assets    # copia y optimiza las capturas de los proyectos (solo local)
-pnpm og             # regenera public/og.png (requiere Google Chrome)
+pnpm og             # regenera public/og.png con capturas de public/projects (requiere Google Chrome)
 ```
 
 ## Estructura
@@ -24,11 +24,13 @@ pnpm og             # regenera public/og.png (requiere Google Chrome)
 ```
 src/
   data/site.ts        ← datos personales (nombre, correo, WhatsApp, bio, tecnologías)
+                         y la bandera `sections` para mostrar u ocultar secciones
   data/projects.ts    ← lista de proyectos, en orden
   i18n/config.ts      ← idiomas conocidos y habilitados
   i18n/es.ts          ← textos de la interfaz en español (fuente de verdad del tipo)
   i18n/en.ts          ← textos en inglés (por ahora copia del español, TODO)
   components/         ← secciones del sitio (Hero, Proyectos, Sobre mí, …)
+  styles/global.css   ← colores, tipografía y estilos compartidos
   lib/assets.ts       ← lee los manifiestos de capturas en build
   pages/[lang]/       ← página principal por idioma (/es/)
 public/
@@ -52,6 +54,39 @@ Todo está en `src/data/site.ts` y marcado con `TODO`:
 
 **CV:** coloca el archivo en `public/cv.pdf`. Si no existe, el botón
 «Descargar CV» se muestra deshabilitado automáticamente (se revisa en el build).
+
+## Mostrar u ocultar secciones
+
+«Sobre mí» y «Contacto» están **ocultas por ahora**. Se controlan con la
+bandera `sections` en `src/data/site.ts`:
+
+```ts
+sections: {
+  about: false,   // «Sobre mí»
+  contact: false, // «Contacto»
+},
+```
+
+Con `false` la sección no se genera, desaparece del menú y se quitan los
+botones que llevaban a ella («Contacto» en el menú y «Hablemos» en la portada;
+la portada queda solo con «Ver proyectos»). Para volver a mostrarla basta con
+cambiar el valor a `true`: el componente, sus textos y sus estilos siguen en el
+proyecto (`src/components/About.astro`, `src/components/Contact.astro`).
+
+## Diseño
+
+Dirección visual «sala nocturna»: cada proyecto se presenta como una obra en
+una galería de noche, con su captura bajo un foco de luz y una cédula al lado
+(título, para qué sirve, tecnologías y «Ver demo» o «Ver capturas»).
+
+- Colores en `src/styles/global.css` (`--wall` añil, `--bone` para el texto,
+  `--marigold` cempasúchil solo para la luz y la acción principal).
+- Tipografías: Archivo variable (eje de ancho; expandida en titulares) y
+  Newsreader (textos), autoalojadas con `@fontsource-variable`.
+- Animación: las capturas «encienden su luz» al llegar a ellas con
+  animaciones ligadas al scroll en CSS (`animation-timeline: view()`). En
+  navegadores sin soporte, o con movimiento reducido, se ven encendidas desde el
+  inicio.
 
 ## Agregar o editar proyectos
 

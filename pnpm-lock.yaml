@@ -11,13 +11,10 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.7.5
         version: 3.7.5
-      '@fontsource-variable/martian-mono':
+      '@fontsource-variable/archivo':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource-variable/schibsted-grotesk':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/gloock':
+      '@fontsource-variable/newsreader':
         specifier: ^5.3.0
         version: 5.3.0
       astro:
@@ -285,14 +282,11 @@ packages:
   '@emnapi/wasi-threads@2.2.0':
     resolution: {integrity: sha512-JP7OYH38Q7+pyTAe14raZHLQIK7BDKbdwji+Xi3pcd/6QkJYQH3SX4wu6EplGrGJWRepoNzedfm0G3B9Z4e9Rw==}
 
-  '@fontsource-variable/martian-mono@5.3.0':
-    resolution: {integrity: sha512-0wVODx9ILwNnaYC4XCuSaFRYtj1Prd89MRVaSuv2ng6zLiQkS4SepaWEPefs7vqCZS8sbEOA8jb/4F5KNMnGdg==}
+  '@fontsource-variable/archivo@5.3.0':
+    resolution: {integrity: sha512-HogK8FJelrD1o7TlZlkIVtHgc20bO5PZRWE7mUeUTdMN055alznQV6/00J00IBeu8FQAH4s3zW9UJNvKExXf+g==}
 
-  '@fontsource-variable/schibsted-grotesk@5.3.0':
-    resolution: {integrity: sha512-ndS6H/KICWANchlHF3q4UdZD+xrZ3Ji0rUobIuXlgvDUzDfqZDsVuXPXZb636nJZMHE9zZ9Fmwgqazm8hMB50Q==}
-
-  '@fontsource/gloock@5.3.0':
-    resolution: {integrity: sha512-vGvBRavw/y3aTCsz1uTNydQjCfRLGNOnSpmn/Qs3EZDqPAKBg6Id4OdHGnWLWXQ57IkzuNk/e9+KdMze+azOxA==}
+  '@fontsource-variable/newsreader@5.3.0':
+    resolution: {integrity: sha512-rrzYi43qMpbzwuFtf9OkWH8sxAPVPcQQQEwXpPtwaKYeJ8yVg5aLs5kawmo1f2Q1t1M38TLmEKCkGVDsYwgdFw==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -1888,11 +1882,9 @@ snapshots:
       tslib: 2.9.1
     optional: true
 
-  '@fontsource-variable/martian-mono@5.3.0': {}
+  '@fontsource-variable/archivo@5.3.0': {}
 
-  '@fontsource-variable/schibsted-grotesk@5.3.0': {}
-
-  '@fontsource/gloock@5.3.0': {}
+  '@fontsource-variable/newsreader@5.3.0': {}
 
   '@img/colour@1.1.0': {}
 

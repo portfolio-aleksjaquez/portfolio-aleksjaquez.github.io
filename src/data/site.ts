@@ -55,6 +55,17 @@ export const site = {
 
   /** Ruta pública del CV. Si el archivo public/cv.pdf no existe, el botón se deshabilita. */
   cvPath: '/cv.pdf',
+
+  /**
+   * Secciones opcionales de la página. Con `false` la sección no se genera,
+   * sale del menú y se quitan los botones que llevaban a ella.
+   * TODO: volver a mostrar «Sobre mí» y «Contacto» cambiando a `true`
+   * cuando la bio y los datos de contacto estén listos.
+   */
+  sections: {
+    about: false,
+    contact: false,
+  },
 };
 
 /**

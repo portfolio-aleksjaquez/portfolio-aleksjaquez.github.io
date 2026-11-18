@@ -10,19 +10,22 @@ interface Props {
   locale: Locale;
 }
 
-const { project, index, locale } = Astro.props;
+/*
+ * Cada proyecto se presenta como una obra en sala: la captura principal bajo
+ * un foco de luz y, a su lado, la cédula con el título, para qué sirve y la
+ * acción principal («Ver demo» o «Ver capturas»).
+ */
+const { project, locale } = Astro.props;
 const t = useTranslations(locale);
 const text = project.text[locale];
-const num = String(index + 1).padStart(2, '0');
 const images = getProjectImages(project.slug);
 const cover = pickCover(images);
 const coverIndex = cover ? images.indexOf(cover) : 0;
 const isLive = project.kind === 'live' && !!project.demoUrl;
-const MAX_THUMBS = 4;
+const MAX_THUMBS = 5;
 const thumbs = images.slice(0, MAX_THUMBS);
 const extra = images.length - thumbs.length;
 const countLabel = images.length === 1 ? t.projects.screensCountOne : fmt(t.projects.screensCount, { n: images.length });
-const demoHost = project.demoUrl ? new URL(project.demoUrl).host + new URL(project.demoUrl).pathname : '';
 const galleryData = images.map((img) => ({
   src: img.webp,
   full: img.png,
@@ -30,36 +33,111 @@ const galleryData = images.map((img) => ({
   h: img.height,
   caption: img.caption,
 }));
-const flip = index % 2 === 1;
+const coverSrcset = cover ? `${cover.thumb} ${cover.thumbWidth}w, ${cover.webp} ${cover.width}w` : '';
+const coverSizes = '(max-width: 900px) 92vw, 860px';
 ---
 
 <article
   id={`p-${project.slug}`}
-  class:list={['project', `project--${project.kind}`, { 'project--flip': flip }]}
+  class:list={['exhibit', `exhibit--${project.kind}`]}
   aria-labelledby={`t-${project.slug}`}
-  data-reveal
 >
-  <div class="project__rule" aria-hidden="true">
-    <span class="project__num">{num}</span>
-    <span class="project__line"></span>
-  </div>
+  <div class="exhibit__grid">
+    <div class="exhibit__media">
+      {
+        isLive ? (
+          <a class="frame" href={project.demoUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            {cover ? (
+              <img
+                class="frame__img"
+                src={cover.webp}
+                srcset={coverSrcset}
+                sizes={coverSizes}
+                width={cover.width}
+                height={cover.height}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="placeholder ui">{t.projects.placeholderLabel}</span>
+            )}
+            <span class="frame__hint ui">
+              {t.projects.viewDemo}
+              <Icon name="arrow" />
+            </span>
+          </a>
+        ) : cover ? (
+          <button class="frame" type="button" data-lightbox-open={project.slug} data-index={coverIndex}>
+            <img
+              class="frame__img"
+              src={cover.webp}
+              srcset={coverSrcset}
+              sizes={coverSizes}
+              width={cover.width}
+              height={cover.height}
+              alt={fmt(t.projects.previewAlt, { title: text.title })}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="frame__hint ui" aria-hidden="true">
+              <Icon name="expand" />
+              {text.galleryButton ?? t.projects.viewScreens}
+            </span>
+            <span class="visually-hidden">
+              {fmt(t.projects.openImage, { n: coverIndex + 1, total: images.length, caption: cover.caption })}
+            </span>
+          </button>
+        ) : (
+          <div class="frame">
+            <span class="placeholder ui">{t.projects.placeholderLabel}</span>
+          </div>
+        )
+      }
+    </div>
 
-  <div class="project__body">
-    <div class="project__text">
-      <p class:list={['mono', 'kind', `kind--${project.kind}`]}>
-        {isLive ? t.projects.kindLive : images.length > 0 ? (text.galleryCount ?? countLabel) : t.projects.kindScreens}
-        {isLive && images.length > 0 && <span class="kind__count">· {countLabel}</span>}
+    {
+      images.length > 1 && (
+        <ul class="thumbs">
+          {thumbs.map((img, i) => (
+            <li>
+              <button type="button" class="thumb" data-lightbox-open={project.slug} data-index={i}>
+                <img src={img.thumb} width={img.thumbWidth} height={img.thumbHeight} alt="" loading="lazy" decoding="async" />
+                {i === thumbs.length - 1 && extra > 0 && (
+                  <span class="thumb__more ui" aria-hidden="true">
+                    +{extra}
+                  </span>
+                )}
+                <span class="visually-hidden">
+                  {fmt(t.projects.openImage, { n: i + 1, total: images.length, caption: img.caption })}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="label">
+      <p class:list={['label__kind', 'ui', `label__kind--${project.kind}`]}>
+        <span>{isLive ? t.projects.kindLive : t.projects.kindScreens}</span>
+        {images.length > 0 && <span class="label__count">{text.galleryCount ?? countLabel}</span>}
       </p>
       <h3 id={`t-${project.slug}`}>{text.title}</h3>
-      {text.note && <p class="note mono">{text.note}</p>}
-      <p class="desc">{text.description}</p>
-      <ul class="tags" aria-label={t.projects.tagsLabel}>
-        {project.tags.map((tag) => <li class="tag">{tag}</li>)}
-      </ul>
-      <div class="actions">
+      {text.note && <p class="label__note ui">{text.note}</p>}
+      <p class="label__desc">{text.description}</p>
+
+      <div class="label__tech">
+        <p class="label__tech-title ui">{t.projects.tagsLabel}</p>
+        <ul class="tags">
+          {project.tags.map((tag) => <li class="tag">{tag}</li>)}
+        </ul>
+      </div>
+
+      <div class="label__actions">
         {
           isLive && (
-            <a class="btn btn--primary" href={project.demoUrl} target="_blank" rel="noopener">
+            <a class="btn btn--light btn--demo" href={project.demoUrl} target="_blank" rel="noopener">
               {t.projects.viewDemo}
               <span class="visually-hidden">{t.a11y.opensInNewTab}</span>
               <Icon name="arrow" class="arrow" />
@@ -68,7 +146,12 @@ const flip = index % 2 === 1;
         }
         {
           images.length > 0 && (
-            <button class:list={['btn', { 'btn--primary': !isLive }]} type="button" data-lightbox-open={project.slug} data-index="0">
+            <button
+              class:list={['btn', { 'btn--gallery': !isLive }]}
+              type="button"
+              data-lightbox-open={project.slug}
+              data-index="0"
+            >
               <Icon name="images" />
               {text.galleryButton ?? t.projects.viewScreens}
             </button>
@@ -76,7 +159,7 @@ const flip = index % 2 === 1;
         }
         {
           project.videoSoon && (
-            <span class="soon mono">
+            <span class="soon ui">
               <Icon name="play" />
               {t.projects.videoSoon}
             </span>
@@ -84,337 +167,73 @@ const flip = index % 2 === 1;
         }
       </div>
     </div>
-
-    <div class="project__media">
-      {
-        isLive ? (
-          <a class="frame frame--link" href={project.demoUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-            <span class="frame__bar">
-              <span class="frame__dots">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span class="frame__url mono">{demoHost}</span>
-            </span>
-            {cover ? (
-              <img
-                class="frame__img"
-                src={cover.webp}
-                srcset={`${cover.thumb} ${cover.thumbWidth}w, ${cover.webp} ${cover.width}w`}
-                sizes="(max-width: 900px) 92vw, 640px"
-                width={cover.width}
-                height={cover.height}
-                alt=""
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <span class="placeholder">
-                <span class="placeholder__num">{num}</span>
-                <span class="placeholder__label mono">{t.projects.placeholderLabel}</span>
-              </span>
-            )}
-          </a>
-        ) : cover ? (
-          <button class="frame frame--button" type="button" data-lightbox-open={project.slug} data-index={coverIndex}>
-            <span class="frame__bar">
-              <span class="frame__dots">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span class="frame__url mono">{cover.caption}</span>
-              <Icon name="expand" class="frame__expand" />
-            </span>
-            <img
-              class="frame__img"
-              src={cover.webp}
-              srcset={`${cover.thumb} ${cover.thumbWidth}w, ${cover.webp} ${cover.width}w`}
-              sizes="(max-width: 900px) 92vw, 640px"
-              width={cover.width}
-              height={cover.height}
-              alt={fmt(t.projects.previewAlt, { title: text.title })}
-              loading="lazy"
-              decoding="async"
-            />
-            <span class="visually-hidden">
-              {fmt(t.projects.openImage, { n: coverIndex + 1, total: images.length, caption: cover.caption })}
-            </span>
-          </button>
-        ) : (
-          <div class="frame">
-            <span class="frame__bar">
-              <span class="frame__dots">
-                <i />
-                <i />
-                <i />
-              </span>
-            </span>
-            <span class="placeholder">
-              <span class="placeholder__num" aria-hidden="true">{num}</span>
-              <span class="placeholder__label mono">{t.projects.placeholderLabel}</span>
-            </span>
-          </div>
-        )
-      }
-
-      {
-        images.length > 1 && (
-          <ul class="thumbs">
-            {thumbs.map((img, i) => (
-              <li>
-                <button type="button" class="thumb" data-lightbox-open={project.slug} data-index={i}>
-                  <img src={img.thumb} width={img.thumbWidth} height={img.thumbHeight} alt="" loading="lazy" decoding="async" />
-                  {i === thumbs.length - 1 && extra > 0 && <span class="thumb__more mono" aria-hidden="true">+{extra}</span>}
-                  <span class="visually-hidden">
-                    {fmt(t.projects.openImage, { n: i + 1, total: images.length, caption: img.caption })}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
   </div>
 
   {images.length > 0 && <script type="application/json" data-gallery={project.slug} set:html={JSON.stringify(galleryData)} />}
 </article>
 
 <style>
-  .project {
-    padding-block: clamp(1.5rem, 4vw, 3rem);
+  .exhibit {
+    container-type: inline-size;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
   }
 
-  .project__rule {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
-  }
-
-  .project__num {
-    font-family: var(--font-display);
-    font-size: clamp(3.2rem, 2rem + 4vw, 5.5rem);
-    line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--line-strong);
-    transition:
-      color 0.5s,
-      -webkit-text-stroke-color 0.5s;
-  }
-
-  .project:hover .project__num,
-  .project:focus-within .project__num {
-    -webkit-text-stroke-color: var(--accent);
-  }
-
-  .project__line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--line-strong), transparent);
-  }
-
-  .project__body {
+  .exhibit__grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr);
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .project--flip .project__body {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  /* --- La obra: captura bajo un foco ------------------------------------ */
+
+  .exhibit__media {
+    position: relative;
+    isolation: isolate;
   }
 
-  .project--flip .project__text {
-    order: 2;
-  }
-
-  .kind {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.1rem;
-    color: var(--muted);
-  }
-
-  .kind--live {
-    color: var(--mint);
-  }
-
-  .kind--live::before {
+  /* Cono de luz cálida que cae sobre la captura. */
+  .exhibit__media::before {
     content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--mint);
-    box-shadow: 0 0 0 0 rgb(143 227 200 / 0.6);
-    animation: pulse 2.4s infinite;
+    position: absolute;
+    z-index: -1;
+    inset: -14px -10% 30%;
+    background: radial-gradient(ellipse 50% 70% at 50% 0%, rgb(var(--light) / 0.2), rgb(var(--light) / 0.05) 55%, transparent 75%);
+    pointer-events: none;
   }
 
-  .kind--screens::before {
+  /* La lámpara de galería, encima del marco. */
+  .exhibit__media::after {
     content: '';
-    width: 8px;
-    height: 8px;
-    border: 1px solid var(--muted);
-    border-radius: 2px;
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    width: 72px;
+    height: 5px;
+    translate: -50% 0;
+    border-radius: 0 0 6px 6px;
+    background: var(--wall-3);
+    box-shadow:
+      0 3px 0 -1px rgb(var(--light) / 0.85),
+      0 6px 22px 2px rgb(var(--light) / 0.35);
   }
-
-  .kind__count {
-    color: var(--muted);
-  }
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgb(143 227 200 / 0.55);
-    }
-    70%,
-    100% {
-      box-shadow: 0 0 0 9px rgb(143 227 200 / 0);
-    }
-  }
-
-  h3 {
-    font-size: clamp(2rem, 1.4rem + 2vw, 3.1rem);
-  }
-
-  .note {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 0.45rem 0.65rem;
-    border: 1px solid rgb(255 106 61 / 0.4);
-    border-radius: var(--radius-s);
-    background: var(--accent-wash);
-    color: var(--accent-soft);
-    font-size: 0.64rem;
-  }
-
-  .desc {
-    margin-top: 1.25rem;
-    color: var(--paper-dim);
-    max-width: 46ch;
-    font-size: 1.06rem;
-  }
-
-  .tags {
-    margin-top: 1.5rem;
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.7rem;
-    margin-top: 1.9rem;
-  }
-
-  .soon {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 48px;
-    padding: 0 1rem;
-    border: 1px dashed var(--line-strong);
-    border-radius: 999px;
-    color: var(--muted);
-    font-size: 0.64rem;
-  }
-
-  .soon :global(svg) {
-    width: 12px;
-    height: 12px;
-    color: var(--accent);
-  }
-
-  /* --- Marco tipo ventana --------------------------------------------- */
 
   .frame {
     position: relative;
     display: block;
     width: 100%;
-    padding: 0;
+    padding: clamp(6px, 1.2cqi, 12px);
     border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    background: var(--ink-1);
+    border-radius: var(--radius);
+    background: var(--wall-1);
     color: inherit;
     font: inherit;
     text-align: left;
     text-decoration: none;
-    overflow: hidden;
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.04) inset,
-      0 30px 60px -30px rgb(0 0 0 / 0.8);
-    transition:
-      transform 0.5s var(--ease-out),
-      border-color 0.3s,
-      box-shadow 0.5s var(--ease-out);
-  }
-
-  .frame--link,
-  .frame--button {
+    box-shadow: 0 40px 70px -40px rgb(0 0 0 / 0.85);
     cursor: pointer;
   }
 
-  .frame--link:hover,
-  .frame--button:hover,
-  .frame--button:focus-visible {
-    transform: translateY(-4px) rotate(-0.25deg);
-    border-color: var(--line-strong);
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.05) inset,
-      0 40px 70px -30px rgb(0 0 0 / 0.9),
-      0 0 0 1px rgb(255 106 61 / 0.25);
-  }
-
-  .frame__bar {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    height: 34px;
-    padding: 0 0.8rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--ink-2);
-  }
-
-  .frame__dots {
-    display: flex;
-    gap: 6px;
-  }
-
-  .frame__dots i {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--ink-3);
-    border: 1px solid var(--line-strong);
-  }
-
-  .frame__dots i:first-child {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .frame__url {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0.32rem 0.7rem;
-    border-radius: 999px;
-    background: var(--ink-0);
-    color: var(--muted);
-    font-size: 0.6rem;
-    text-transform: none;
-    letter-spacing: 0.02em;
-  }
-
-  .frame :global(.frame__expand) {
-    width: 15px;
-    height: 15px;
-    color: var(--muted);
+  div.frame {
+    cursor: default;
   }
 
   .frame__img {
@@ -422,53 +241,57 @@ const flip = index % 2 === 1;
     aspect-ratio: 16 / 10;
     object-fit: cover;
     object-position: top center;
-    background: var(--ink-2);
+    background: var(--wall-2);
+    border-radius: 1px;
   }
 
-  /* Imagen de reemplazo cuando aún no hay capturas. */
+  .frame__hint {
+    position: absolute;
+    right: clamp(14px, 2cqi, 24px);
+    bottom: clamp(14px, 2cqi, 24px);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--wall) 88%, transparent);
+    backdrop-filter: blur(6px);
+    color: var(--bone);
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    translate: 0 6px;
+    transition:
+      opacity 0.25s,
+      translate 0.3s var(--ease-out);
+  }
+
+  .frame__hint :global(svg) {
+    width: 1em;
+    height: 1em;
+  }
+
+  .frame:hover .frame__hint,
+  .frame:focus-visible .frame__hint {
+    opacity: 1;
+    translate: none;
+  }
+
   .placeholder {
-    position: relative;
     display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 1rem;
+    place-items: center;
     aspect-ratio: 16 / 10;
-    background:
-      radial-gradient(circle at 70% 30%, rgb(255 106 61 / 0.16), transparent 55%),
-      repeating-linear-gradient(-45deg, transparent 0 11px, rgb(242 236 225 / 0.035) 11px 12px),
-      var(--ink-1);
-    text-align: center;
-  }
-
-  .placeholder__num {
-    font-family: var(--font-display);
-    font-size: clamp(5rem, 3rem + 7vw, 9rem);
-    line-height: 0.85;
-    color: transparent;
-    -webkit-text-stroke: 1px rgb(255 106 61 / 0.7);
-  }
-
-  .placeholder__label {
+    background: repeating-linear-gradient(-45deg, transparent 0 11px, rgb(255 255 255 / 0.03) 11px 12px), var(--wall-2);
     color: var(--muted);
-    font-size: 0.62rem;
-    padding: 0.45rem 0.75rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgb(11 12 14 / 0.6);
   }
 
-  .placeholder__label--alt {
-    color: var(--accent-soft);
-    border-color: rgb(255 106 61 / 0.35);
-  }
-
-  /* --- Miniaturas ---------------------------------------------------- */
+  /* --- Miniaturas ------------------------------------------------------- */
 
   .thumbs {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.6rem;
-    margin: 0.8rem 0 0;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(0.4rem, 1cqi, 0.75rem);
+    margin: clamp(0.5rem, 1.2cqi, 0.9rem) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -479,18 +302,15 @@ const flip = index % 2 === 1;
     width: 100%;
     padding: 0;
     border: 1px solid var(--line);
-    border-radius: var(--radius-s);
+    border-radius: var(--radius);
     overflow: hidden;
-    background: var(--ink-1);
+    background: var(--wall-2);
     cursor: zoom-in;
-    transition:
-      border-color 0.2s,
-      transform 0.3s var(--ease-out);
+    transition: border-color 0.2s;
   }
 
   .thumb:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    border-color: var(--marigold);
   }
 
   .thumb img {
@@ -498,12 +318,13 @@ const flip = index % 2 === 1;
     aspect-ratio: 16 / 10;
     object-fit: cover;
     object-position: top center;
-    opacity: 0.8;
-    transition: opacity 0.2s;
+    filter: brightness(0.78);
+    transition: filter 0.25s;
   }
 
-  .thumb:hover img {
-    opacity: 1;
+  .thumb:hover img,
+  .thumb:focus-visible img {
+    filter: none;
   }
 
   .thumb__more {
@@ -511,23 +332,206 @@ const flip = index % 2 === 1;
     inset: 0;
     display: grid;
     place-items: center;
-    background: rgb(11 12 14 / 0.72);
-    color: var(--paper);
+    background: color-mix(in oklab, var(--wall) 70%, transparent);
+    color: var(--bone);
+    font-weight: 650;
+  }
+
+  /* --- La cédula ---------------------------------------------------------- */
+
+  .label {
+    position: relative;
+    z-index: 1;
+    margin: clamp(0.75rem, 2cqi, 1.25rem) 0 0;
+    padding: clamp(1.4rem, 4cqi, 2.1rem);
+    border-radius: var(--radius-panel);
+    border-top: 3px solid var(--line-strong);
+    background: var(--wall-2);
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.9);
+  }
+
+  .exhibit--live .label {
+    border-top-color: var(--marigold);
+  }
+
+  .label__kind {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 1.1rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--bone-dim);
+  }
+
+  .label__kind > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .label__kind > span:first-child::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border: 1px solid currentColor;
+    border-radius: 1px;
+  }
+
+  .label__kind--live > span:first-child {
+    color: var(--marigold);
+  }
+
+  .label__kind--live > span:first-child::before {
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 10px rgb(var(--light) / 0.8);
+  }
+
+  .label__count {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  h3 {
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
+    font-stretch: 112%;
+    line-height: 1.04;
+  }
+
+  .label__note {
+    display: inline-block;
+    margin-top: 0.85rem;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--bone-dim);
     font-size: 0.8rem;
   }
 
-  @media (max-width: 900px) {
-    .project__body,
-    .project--flip .project__body {
-      grid-template-columns: minmax(0, 1fr);
+  .label__desc {
+    margin-top: 1rem;
+    max-width: 52ch;
+    color: var(--bone-dim);
+    font-size: 1.07rem;
+    line-height: 1.6;
+  }
+
+  .label__tech {
+    margin-top: 1.35rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .label__tech-title {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.45rem;
+  }
+
+  .label__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.6rem;
+  }
+
+  .btn--demo {
+    min-height: 54px;
+    padding-inline: 1.6rem;
+    font-size: 1.08rem;
+  }
+
+  .btn--gallery {
+    --btn-bd: var(--marigold);
+    min-height: 54px;
+    padding-inline: 1.4rem;
+    font-size: 1.05rem;
+  }
+
+  .btn--gallery:hover {
+    --btn-bd: var(--marigold-soft);
+  }
+
+  .soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 40px;
+    padding: 0 0.85rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .soon :global(svg) {
+    width: 12px;
+    height: 12px;
+    color: var(--marigold);
+  }
+
+  /* --- Composición en pantallas anchas ----------------------------------- */
+
+  @container (min-width: 880px) {
+    .exhibit__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(19rem, 26rem);
+      align-items: end;
     }
 
-    .project--flip .project__text {
-      order: 0;
+    .exhibit__media {
+      grid-column: 1;
+      grid-row: 1;
     }
 
-    .project__media {
-      order: -1;
+    .thumbs {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* La cédula se monta sobre el borde del marco, como una ficha en el muro. */
+    .label {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0 0 clamp(1.5rem, 4cqi, 3rem) -2rem;
+    }
+  }
+
+  /* --- Encender la luz al llegar a cada obra (CSS, sin JS) ---------------- */
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .frame__img {
+        animation: lamp-on linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+
+      .exhibit__media::before {
+        animation: glow-on linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  @keyframes lamp-on {
+    from {
+      filter: brightness(0.3) saturate(0.5);
+    }
+    to {
+      filter: none;
+    }
+  }
+
+  @keyframes glow-on {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 </style>

@@ -1,7 +1,9 @@
 ---
-import '@fontsource/gloock/index.css';
-import '@fontsource-variable/schibsted-grotesk/index.css';
-import '@fontsource-variable/martian-mono/index.css';
+// Fuentes variables autoalojadas (font-display: swap; subconjuntos por unicode-range).
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import newsreaderLatin from '@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2?url';
 import '../styles/global.css';
 
 import { localeTags, enabledLocales, defaultLocale, type Locale } from '../i18n/config';
@@ -32,7 +34,7 @@ const tags = localeTags[locale];
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <meta name="author" content={site.name} />
-    <meta name="theme-color" content="#0b0c0e" />
+    <meta name="theme-color" content="#10142b" />
     <meta name="color-scheme" content="dark" />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
@@ -42,6 +44,9 @@ const tags = localeTags[locale];
           <link rel="alternate" hreflang={localeTags[l].htmlLang} href={new URL(`/${l}/`, Astro.site)} />
         ))
     }
+
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
@@ -62,10 +67,6 @@ const tags = localeTags[locale];
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImage} />
-
-    <script is:inline>
-      document.documentElement.classList.add('js');
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#contenido">{t.a11y.skipToContent}</a>
@@ -74,27 +75,5 @@ const tags = localeTags[locale];
       <slot />
     </main>
     <slot name="footer" />
-
-    <script>
-      // Revelado progresivo de secciones. Sin JS o con movimiento reducido, todo es visible.
-      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce || !('IntersectionObserver' in window)) {
-        items.forEach((el) => el.classList.add('is-in'));
-      } else {
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
-              }
-            }
-          },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
-        );
-        items.forEach((el) => io.observe(el));
-      }
-    </script>
   </body>
 </html>
