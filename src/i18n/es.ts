@@ -29,9 +29,9 @@ const es = {
   },
   hero: {
     kicker: 'Desarrollo web · México',
-    titleLead: 'Sitios y aplicaciones',
-    titleAccent: 'que se entienden',
-    titleTail: 'a la primera.',
+    titleLead: 'Portafolio',
+    titleAccent: 'de proyectos',
+    titleTail: '',
     lead:
       'Construyo páginas, sistemas y actividades interactivas pensadas para las personas que los van a usar: claros, rápidos y que funcionan igual de bien en el teléfono que en la computadora.',
     ctaProjects: 'Ver proyectos',

@@ -23,7 +23,7 @@ const index = projects.map((p) => ({ project: p, cover: pickCover(getProjectImag
     <h1 id="hero-title">
       <span>{t.hero.titleLead}</span>
       <span>{t.hero.titleAccent}</span>
-      <span>{t.hero.titleTail}</span>
+      {t.hero.titleTail && <span>{t.hero.titleTail}</span>}
     </h1>
 
     <div class="hero__foot">

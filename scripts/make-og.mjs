@@ -37,7 +37,7 @@ h1{font-weight:660;font-stretch:118%;font-size:66px;line-height:.95;letter-spaci
 </style></head><body>
 <p class="by"><b>Alejandro Jaquez</b><span>Portafolio de desarrollo web</span></p>
 <p class="tag"><i></i>8 proyectos, 5 demos en vivo</p>
-<h1>Sitios y aplicaciones<br>que se entienden a la primera.</h1>
+<h1>Portafolio<br>de proyectos</h1>
 <div class="wall">${hung.map((s) => `<div class="w"><div class="f"><img src="${img(s)}" alt=""></div></div>`).join('')}</div>
 </body></html>`;
 
