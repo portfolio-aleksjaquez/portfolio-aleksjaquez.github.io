@@ -72,12 +72,11 @@ export const site = {
  * Tecnologías que maneja, con una explicación sin jerga.
  * TODO: Alejandro debe confirmar la lista.
  */
-export type Skill = { name: string; group: 'web' | 'apps' | 'backend' | 'extra'; what: Localized<string> };
+export type Skill = { name: string; group: 'web' | 'apps' | 'extra'; what: Localized<string> };
 
 export const skillGroups: Record<Skill['group'], Localized<string>> = {
   web: { es: 'Sitios web', en: 'Sitios web' },
   apps: { es: 'Aplicaciones', en: 'Aplicaciones' },
-  backend: { es: 'Sistemas y datos', en: 'Sistemas y datos' },
   extra: { es: 'Experiencias', en: 'Experiencias' },
 };
 
@@ -88,8 +87,6 @@ export const skills: Skill[] = [
   { name: 'Vue', group: 'apps', what: { es: 'Pantallas interactivas que responden al instante.', en: 'Pantallas interactivas que responden al instante.' } },
   { name: 'Nuxt', group: 'apps', what: { es: 'Aplicaciones web completas, incluso instalables.', en: 'Aplicaciones web completas, incluso instalables.' } },
   { name: 'Svelte', group: 'apps', what: { es: 'Interfaces ligeras que cargan muy rápido.', en: 'Interfaces ligeras que cargan muy rápido.' } },
-  { name: 'Laravel', group: 'backend', what: { es: 'Sistemas con usuarios, permisos y bases de datos.', en: 'Sistemas con usuarios, permisos y bases de datos.' } },
-  { name: 'Bases de datos', group: 'backend', what: { es: 'Información guardada de forma ordenada y segura.', en: 'Información guardada de forma ordenada y segura.' } },
   { name: 'Animación web', group: 'extra', what: { es: 'Movimiento que guía la vista y da vida a la página.', en: 'Movimiento que guía la vista y da vida a la página.' } },
   { name: 'Actividades interactivas', group: 'extra', what: { es: 'Arrastrar, emparejar y elegir, en tablet y computadora.', en: 'Arrastrar, emparejar y elegir, en tablet y computadora.' } },
   { name: 'Visión por computadora', group: 'extra', what: { es: 'Programas que analizan y miden imágenes.', en: 'Programas que analizan y miden imágenes.' } },

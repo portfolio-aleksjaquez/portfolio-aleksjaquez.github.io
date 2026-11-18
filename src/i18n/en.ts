@@ -87,7 +87,7 @@ const en: Translations = {
   },
   skills: {
     eyebrow: 'Herramientas',
-    title: 'Tecnologías que manejo',
+    title: 'Tecnologías',
     intro: 'No necesitas conocerlas: aquí va, en pocas palabras, para qué sirve cada una.',
   },
   contact: {
