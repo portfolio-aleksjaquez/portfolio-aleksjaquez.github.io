@@ -25,7 +25,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Agenda día por día"
+      "caption": "Agenda por día con línea de tiempo"
     },
     {
       "id": "03",
@@ -51,7 +51,7 @@
       "thumbHeight": 844,
       "originalWidth": 390,
       "originalHeight": 844,
-      "caption": "Cuenta regresiva en celular"
+      "caption": "Cuenta regresiva y sede en celular"
     }
   ]
 }

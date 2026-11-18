@@ -12,7 +12,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Inicio de sesión del sistema de asignación de tareas"
+      "caption": "Panel del administrador con las tareas del día, el tiempo invertido y el estatus de cada colaborador"
     },
     {
       "id": "02",
@@ -25,7 +25,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Panel del administrador con las tareas del día, el tiempo invertido y el estatus de cada colaborador"
+      "caption": "Asignación de una nueva tarea a un colaborador con tiempo estimado y documento de referencia"
     },
     {
       "id": "03",
@@ -38,7 +38,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Asignación de una nueva tarea a un colaborador con tiempo estimado y documento de referencia"
+      "caption": "Vista del colaborador con controles para iniciar, pausar y finalizar sus tareas"
     },
     {
       "id": "04",
@@ -51,7 +51,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Vista del colaborador con controles para iniciar, pausar y finalizar sus tareas"
+      "caption": "Visor integrado que abre el documento de referencia de la tarea"
     },
     {
       "id": "05",
@@ -64,7 +64,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Visor integrado que abre el documento de referencia de la tarea"
+      "caption": "Inicio de sesión del sistema de asignación de tareas"
     }
   ]
 }

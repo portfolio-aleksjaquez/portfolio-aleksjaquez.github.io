@@ -52,6 +52,19 @@
       "originalWidth": 780,
       "originalHeight": 3400,
       "caption": "Estadísticas en celular"
+    },
+    {
+      "id": "05",
+      "png": "/projects/demo-dashboard-compras/05.png",
+      "webp": "/projects/demo-dashboard-compras/05.webp",
+      "thumb": "/projects/demo-dashboard-compras/05-thumb.webp",
+      "width": 1440,
+      "height": 900,
+      "thumbWidth": 720,
+      "thumbHeight": 450,
+      "originalWidth": 1440,
+      "originalHeight": 900,
+      "caption": "Tutorial «¿Cómo funciona?» que explica el flujo paso a paso"
     }
   ]
 }

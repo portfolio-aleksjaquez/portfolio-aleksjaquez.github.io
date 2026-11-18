@@ -12,7 +12,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Inicio de sesión"
+      "caption": "Panel con eventos urgentes, retrasados, en proceso y finalizados"
     },
     {
       "id": "02",
@@ -25,7 +25,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Panel con eventos urgentes, retrasados, en proceso y finalizados"
+      "caption": "Desempeño de cada integrante por departamento"
     },
     {
       "id": "03",
@@ -38,7 +38,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Desempeño de cada integrante por departamento"
+      "caption": "Detalle de un oficio con su documento de evidencia"
     },
     {
       "id": "04",
@@ -51,7 +51,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Detalle de un oficio con su documento de evidencia"
+      "caption": "Registrar un evento y turnarlo a otro departamento"
     },
     {
       "id": "05",
@@ -64,7 +64,7 @@
       "thumbHeight": 450,
       "originalWidth": 1440,
       "originalHeight": 900,
-      "caption": "Registrar un evento y turnarlo a otro departamento"
+      "caption": "Inicio de sesión"
     }
   ]
 }
