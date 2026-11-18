@@ -102,7 +102,7 @@ export const projects: Project[] = [
   {
     slug: 'expedientes-clinicos',
     kind: 'screens',
-    tags: ['PHP', 'MySQL', 'Agenda'],
+    tags: ['Sistema web', 'Agenda', 'Búsqueda'],
     text: same({
       title: 'Expedientes y citas clínicas',
       description:
@@ -112,7 +112,7 @@ export const projects: Project[] = [
   {
     slug: 'asignaciones',
     kind: 'screens',
-    tags: ['Laravel', 'Vue', 'Inertia'],
+    tags: ['Vue', 'Sistema web', 'Cronómetro'],
     text: same({
       title: 'Asignación de tareas y control de tiempo',
       description:
@@ -122,7 +122,7 @@ export const projects: Project[] = [
   {
     slug: 'gestion-institucional',
     kind: 'screens',
-    tags: ['PHP', 'MySQL', 'Bootstrap', 'Reportes PDF'],
+    tags: ['Sistema web', 'Bootstrap', 'Reportes PDF'],
     text: same({
       title: 'Gestión institucional de eventos y evidencias',
       description:
